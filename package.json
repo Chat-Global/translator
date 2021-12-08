@@ -10,7 +10,10 @@
 		"type": "git",
 		"url": "git+https://github.com/Chat-Global/translator.git"
 	},
-	"keywords": ["translator", "json"],
+	"keywords": [
+		"translator",
+		"json"
+	],
 	"author": "tnfAngel",
 	"license": "ISC",
 	"bugs": {
@@ -21,5 +24,8 @@
 		"@types/node": "^16.11.12",
 		"ts-node": "^10.4.0",
 		"typescript": "^4.5.2"
+	},
+	"dependencies": {
+		"@vitalets/google-translate-api": "^7.0.0"
 	}
 }
