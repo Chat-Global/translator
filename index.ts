@@ -11,9 +11,9 @@ const settings = {
 	debug: true
 };
 
-const blue = (str: string) => '\033[1;34m' + str + '\033[1;0m';
-const green = (str: string) => '\033[1;32m' + str + '\033[1;0m';
-const magenta = (str: string) => '\033[1;35m' + str + '\033[1;0m';
+const blue = (str: string): string => '\033[1;34m' + str + '\033[1;0m';
+const green = (str: string): string => '\033[1;32m' + str + '\033[1;0m';
+const magenta = (str: string): string => '\033[1;35m' + str + '\033[1;0m';
 
 const debug = (text: string): void => {
 	if (settings.debug) {
@@ -28,10 +28,10 @@ const translatorError = (text: string): void => {
 };
 
 const wait = (time: number): Promise<any> => {
-	return new Promise((resolve) => setTimeout(resolve, time));
+	return new Promise((resolve: any) => setTimeout(resolve, time));
 };
 
-const main = async () => {
+const main = async (): Promise<void> => {
 	const rootLangCode = settings.rootLangCode;
 
 	debug(
@@ -128,20 +128,13 @@ const main = async () => {
 	}
 };
 
-const isString = (val: any): boolean => {
-	return typeof val === 'string';
-};
+const isString = (val: any): boolean => typeof val === 'string';
 
-const isObject = (val: any): boolean => {
-	return (
-		val === Object(val) &&
-		Object.prototype.toString.call(val) !== '[object Array]'
-	);
-};
+const isObject = (val: any): boolean =>
+	val === Object(val) &&
+	Object.prototype.toString.call(val) !== '[object Array]';
 
-const isArray = (val: any): boolean => {
-	return Array.isArray(val);
-};
+const isArray = (val: any): boolean => Array.isArray(val);
 
 const translateString = async (
 	text: string,
@@ -367,7 +360,11 @@ const deepArray = (
 	return result;
 };
 
-const deepMap = (source: any, rootObjPath: string[], rootFileObjPath: any) => {
+const deepMap = (
+	source: any,
+	rootObjPath: string[],
+	rootFileObjPath: any
+): any => {
 	if (isString(source))
 		return deepString(source, rootObjPath, rootFileObjPath);
 
