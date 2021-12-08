@@ -2,14 +2,7 @@ const { writeFileSync, existsSync, readFileSync, openSync } = require('fs');
 
 const translator = require('@vitalets/google-translate-api');
 
-const settings = {
-	langPath: './lang/',
-	rootLangFile: './lang/en.json',
-	rootLangCode: 'en',
-	outputLangs: ['es', 'de', 'fr', 'pt'],
-	translateDelay: 200,
-	debug: true
-};
+const settings = require('./settings');
 
 const blue = (str: string): string => '\033[1;34m' + str + '\033[1;0m';
 const green = (str: string): string => '\033[1;32m' + str + '\033[1;0m';
@@ -27,9 +20,8 @@ const translatorError = (text: string): void => {
 	throw new Error(`[ Translator ] ${text}`);
 };
 
-const wait = (time: number): Promise<any> => {
-	return new Promise((resolve: any) => setTimeout(resolve, time));
-};
+const wait = (time: number): Promise<any> =>
+	new Promise((resolve: any) => setTimeout(resolve, time));
 
 const main = async (): Promise<void> => {
 	const rootLangCode = settings.rootLangCode;
