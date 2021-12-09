@@ -286,9 +286,7 @@ const translate = async (
 			rootFileObjPath
 		);
 
-	return translatorError(
-		`[ ${fromLangCode} => ${toLangCode} ] Unknown type for the source provided.`
-	);
+	return source;
 };
 
 const deepString = (
@@ -377,7 +375,7 @@ const deepMap = (
 
 	if (isArray(source)) return deepArray(source, rootObjPath, rootFileObjPath);
 
-	return translatorError('[ MAP ] Unknown type for the source provided.');
+	return source;
 };
 
 main();
