@@ -4,17 +4,21 @@ const translator = require('@vitalets/google-translate-api');
 
 const settings = require('./settings');
 
-const blue = (str: string): string => '\033[1;34m' + str + '\033[1;0m';
-const green = (str: string): string => '\033[1;32m' + str + '\033[1;0m';
-const magenta = (str: string): string => '\033[1;35m' + str + '\033[1;0m';
+const colors = {
+	blue: (str: string): string => `\x1B[1;34m${str}\x1B[1;0m`,
+	green: (str: string): string => `\x1B[1;32m${str}\x1B[1;0m`,
+	magenta: (str: string): string => `\x1B[1;35m${str}\x1B[1;0m`
+};
 
 const debug = (text: string): void => {
 	if (settings.debug) {
-		return console.log(`[ ${magenta('Translator')} ] ${text}`);
+		return console.log(`[ ${colors.magenta('Translator')} ] ${text}`);
 	}
 };
 
-debug(`${blue('$')} Welcome to the ${green('Translation Service')}`);
+debug(
+	`${colors.blue('$')} Welcome to the ${colors.green('Translation Service')}`
+);
 
 const translatorError = (text: string): void => {
 	throw new Error(`[ Translator ] ${text}`);
@@ -27,9 +31,9 @@ const main = async (): Promise<void> => {
 	const rootLangCode = settings.rootLangCode;
 
 	debug(
-		`[ ${blue('main')} ] Starting root translation service (${green(
-			rootLangCode
-		)})`
+		`[ ${colors.blue(
+			'main'
+		)} ] Starting root translation service (${colors.green(rootLangCode)})`
 	);
 
 	const rootFilePath = settings.rootLangFile;
@@ -39,7 +43,11 @@ const main = async (): Promise<void> => {
 			'[ main ] Invalid path provided on rootLangFile.'
 		);
 
-	debug(`[ ${blue('main')} ] Opening root file: ${green(rootFilePath)}`);
+	debug(
+		`[ ${colors.blue('main')} ] Opening root file: ${colors.green(
+			rootFilePath
+		)}`
+	);
 
 	const rootFileContent = readFileSync(rootFilePath, 'utf8');
 
@@ -58,27 +66,27 @@ const main = async (): Promise<void> => {
 
 	for (const langCode of settings.outputLangs) {
 		debug(
-			`[ ${blue(rootLangCode)} => ${blue(
+			`[ ${colors.blue(rootLangCode)} => ${colors.blue(
 				langCode
-			)} ] Starting translation service (${green(langCode)})`
+			)} ] Starting translation service (${colors.green(langCode)})`
 		);
 
 		const filePath = `${settings.langPath}${langCode}.json`;
 
 		if (!existsSync(filePath)) {
 			debug(
-				`[ ${blue(rootLangCode)} => ${blue(
+				`[ ${colors.blue(rootLangCode)} => ${colors.blue(
 					langCode
-				)} ] Creating file: ${green(filePath)}`
+				)} ] Creating file: ${colors.green(filePath)}`
 			);
 
 			await writeFileSync(filePath, '{}');
 		}
 
 		debug(
-			`[ ${blue(rootLangCode)} => ${blue(
+			`[ ${colors.blue(rootLangCode)} => ${colors.blue(
 				langCode
-			)} ] Opening file: ${green(filePath)}`
+			)} ] Opening file: ${colors.green(filePath)}`
 		);
 
 		const fileContent = readFileSync(filePath, 'utf8');
@@ -111,9 +119,9 @@ const main = async (): Promise<void> => {
 		);
 
 		debug(
-			`[ ${blue(rootLangCode)} => ${blue(
+			`[ ${colors.blue(rootLangCode)} => ${colors.blue(
 				langCode
-			)} ] Translation ended for ${green(langCode)}`
+			)} ] Translation ended for ${colors.green(langCode)}`
 		);
 
 		await writeFileSync(filePath, JSON.stringify(result, null, 2));
@@ -139,19 +147,21 @@ const translateString = async (
 
 	if (rootText && rootText !== 'untranslated') {
 		debug(
-			`[ ${blue(fromLangCode)} => ${blue(toLangCode)} ] [ ${magenta(
-				'skipped'
-			)} ] ${green(rootObjPath.join(''))} ==> ${blue(rootText)}`
+			`[ ${colors.blue(fromLangCode)} => ${colors.blue(
+				toLangCode
+			)} ] [ ${colors.magenta('skipped')} ] ${colors.green(
+				rootObjPath.join('')
+			)} ==> ${colors.blue(rootText)}`
 		);
 
 		return rootText;
 	} else {
 		debug(
-			`[ ${blue(fromLangCode)} => ${blue(
+			`[ ${colors.blue(fromLangCode)} => ${colors.blue(
 				toLangCode
-			)} ] Starting translation for ${green(
+			)} ] Starting translation for ${colors.green(
 				rootObjPath.join('')
-			)} ==> ${blue(text)}`
+			)} ==> ${colors.blue(text)}`
 		);
 
 		await wait(settings.translateDelay);
@@ -162,11 +172,11 @@ const translateString = async (
 		});
 
 		debug(
-			`[ ${blue(fromLangCode)} => ${blue(
+			`[ ${colors.blue(fromLangCode)} => ${colors.blue(
 				toLangCode
-			)} ] Translation ended for ${green(
+			)} ] Translation ended for ${colors.green(
 				rootObjPath.join('')
-			)} ==> ${blue(result.text)}`
+			)} ==> ${colors.blue(result.text)}`
 		);
 
 		return result.text;
