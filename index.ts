@@ -20,9 +20,8 @@ const translatorError = (text: string): void => {
 	throw new Error(`[ Translator ] ${text}`);
 };
 
-const wait = (time: number): Promise<any> => {
-	return new Promise((resolve: any) => setTimeout(resolve, time));
-};
+const wait = (time: number): Promise<any> =>
+	new Promise((resolve: any) => setTimeout(resolve, time));
 
 const main = async (): Promise<void> => {
 	const rootLangCode = settings.rootLangCode;
