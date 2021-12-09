@@ -20,8 +20,9 @@ const translatorError = (text: string): void => {
 	throw new Error(`[ Translator ] ${text}`);
 };
 
-const wait = (time: number): Promise<any> =>
-	new Promise((resolve: any) => setTimeout(resolve, time));
+const wait = (time: number): Promise<any> => {
+	return new Promise((resolve: any) => setTimeout(resolve, time));
+};
 
 const main = async (): Promise<void> => {
 	const rootLangCode = settings.rootLangCode;
@@ -184,7 +185,9 @@ const translateObject = async (
 
 	let iteration = 0;
 
-	for (const [key, value] of Object.entries(object)) {
+	const entries = Object.entries(object);
+
+	for (const [key, value] of entries) {
 		if (iteration === 0) {
 			rootObjPath.push(`['${key}']`);
 		} else {
@@ -202,9 +205,11 @@ const translateObject = async (
 		result[key] = translatedValue;
 
 		iteration = iteration + 1;
-	}
 
-	rootObjPath.splice(rootObjPath.length - 1, 1);
+		if (iteration == entries.length) {
+			rootObjPath.splice(rootObjPath.length - 1, 1);
+		}
+	}
 
 	return result;
 };
@@ -239,9 +244,11 @@ const translateArray = async (
 		result.push(translatedValue);
 
 		iteration = iteration + 1;
-	}
 
-	rootObjPath.splice(rootObjPath.length - 1, 1);
+		if (iteration == array.length) {
+			rootObjPath.splice(rootObjPath.length - 1, 1);
+		}
+	}
 
 	return result;
 };
@@ -304,7 +311,9 @@ const deepObject = (
 
 	let iteration = 0;
 
-	for (const [key, value] of Object.entries(object)) {
+	const entries = Object.entries(object);
+
+	for (const [key, value] of entries) {
 		if (iteration === 0) {
 			rootObjPath.push(`['${key}']`);
 		} else {
@@ -316,9 +325,11 @@ const deepObject = (
 		result[key] = deepValue;
 
 		iteration = iteration + 1;
-	}
 
-	rootObjPath.splice(rootObjPath.length - 1, 1);
+		if (iteration == entries.length) {
+			rootObjPath.splice(rootObjPath.length - 1, 1);
+		}
+	}
 
 	return result;
 };
@@ -345,9 +356,11 @@ const deepArray = (
 		result.push(deepValue);
 
 		iteration = iteration + 1;
-	}
 
-	rootObjPath.splice(rootObjPath.length - 1, 1);
+		if (iteration == array.length) {
+			rootObjPath.splice(rootObjPath.length - 1, 1);
+		}
+	}
 
 	return result;
 };
